@@ -2,43 +2,43 @@
 
 def format_phone_number(text: str) -> str:
     """
-    Нормалізує формат номера телефону у стандартний формат +380XXXXXXXXX
-    Працює з номерами телефонів, що починаються з коду +380 або 0
-    :param text:
-    :return:
+    Normalizes the phone number to the standard format +380XXXXXXXXX.
+    Works with phone numbers starting with the code +380 or 0.
+    :param text: Input text containing a phone number
+    :return: Normalized phone number with digits replaced by 'X'
     """
     output = ""
     digits_seen = 0
-    expect_digit = None  # Очікувана наступна цифра в послідовності +380 або 380
+    expect_digit = None  # Expected next digit in the +380 or 380 sequence
 
     for char in text:
         if char.isdigit():
             digits_seen += 1
 
-            # Якщо це перша цифра і вона 3 або 0
+            # If this is the first digit, and it is 3 or 0
             if digits_seen == 1:
                 if char == '3':
                     output += char
-                    expect_digit = '8'  # Далі очікуємо 8
+                    expect_digit = '8'  # Next we expect 8
                 elif char == '0':
                     output += char
-                    expect_digit = None  # Більше не очікуємо особливих цифр
+                    expect_digit = None  # No specific digit expected next
                 else:
                     output += 'X'
-            # Якщо це друга цифра і ми очікуємо 8
+            # If this is the second digit and we expect 8
             elif expect_digit == '8' and char == '8':
                 output += char
-                expect_digit = '0'  # Після 38 очікуємо 0
-            # Якщо це третя цифра і ми очікуємо 0
+                expect_digit = '0'  # After 38, expect 0
+            # If this is the third digit and we expect 0
             elif expect_digit == '0' and char == '0':
                 output += char
-                expect_digit = None  # Більше не очікуємо особливих цифр
+                expect_digit = None  # No specific digit expected next
             else:
                 output += 'X'
         else:
-            # Не цифра, просто додаємо символ
+            # Not a digit, just add the character
             output += char
-            # Якщо це +, скидаємо лічильник цифр
+            # If it's a '+', reset the digit counter
             if char == '+':
                 digits_seen = 0
 
